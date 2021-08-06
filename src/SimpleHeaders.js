@@ -65,7 +65,7 @@ export default class SimpleHeaders {
         }
 
         // There isn't a subdomain present, just grab the host.
-        else this[s.domain]  = this.Host.substring(this.Host.indexOf('.') + 1)
+        else this[s.domain]  = this.Host
 
         // Split the port from the domain.
         if(this.port) this[s.domain] = this.domain.substring(0, this.domain.indexOf(":"))

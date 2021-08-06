@@ -1,6 +1,6 @@
 {
   "name": "@leemcdonald-au/simpleheaders",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple method to break headers into JSON or build headers from JSON.",
   "main": "src/SimpleHeaders.js",
   "scripts": {
