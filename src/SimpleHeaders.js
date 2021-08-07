@@ -48,33 +48,39 @@ export default class SimpleHeaders {
             const value = split.substring(split.indexOf(': ') + 2)
 
             // Append to the result object.
-            if(vari && value) this[vari] = value
+            if(vari && value) this[vari] = isNaN(value) ? value : Number(value) // Do number conversion.
         })
 
-        // Populate the PATH and TYPE values.
-        this[s.type]   = pathtype.substring(0, pathtype.indexOf(' '))
-        this[s.path]   = pathtype.substring(pathtype.indexOf(' ') + 1, pathtype.lastIndexOf(' '))
+        // Host is a header we always expect to have, if we don't have it, something's gone arry.
+        if(this.Host) {
+            // Populate the PATH and TYPE values.
+            this[s.type]   = pathtype.substring(0, pathtype.indexOf(' '))
+            this[s.path]   = pathtype.substring(pathtype.indexOf(' ') + 1, pathtype.lastIndexOf(' '))
 
-        // Grab out the port.
-        if(this.Host.includes(':')) this[s.port] = Number(this.Host.substring(this.Host.indexOf(':') + 1))
+            // Grab out the port.
+            if(this.Host.includes(':')) this[s.port] = Number(this.Host.substring(this.Host.indexOf(':') + 1))
 
-        // Grab the port, host and domain values.
-        if(this.Host.split('.').length > 2) {
-            this[s.host]    = this.Host.substring(0, this.Host.indexOf('.'))
-            this[s.domain]  = this.Host.substring(this.Host.indexOf('.') + 1)
-        }
+            // Grab the port, host and domain values.
+            if(this.Host.split('.').length > 2) {
+                this[s.host]    = this.Host.substring(0, this.Host.indexOf('.'))
+                this[s.domain]  = this.Host.substring(this.Host.indexOf('.') + 1)
+            }
 
-        // There isn't a subdomain present, just grab the host.
-        else this[s.domain]  = this.Host
+            // There isn't a subdomain present, just grab the host.
+            else this[s.domain]  = this.Host
 
-        // Split the port from the domain.
-        if(this.port) this[s.domain] = this.domain.substring(0, this.domain.indexOf(":"))
+            // Split the port from the domain.
+            if(this.port) this[s.domain] = this.domain.substring(0, this.domain.indexOf(":"))
 
-        // Check whether we've come from HTTP or HTTPS by hopefully checking for a unique HTTPS header.
-        else {
-            if(this['Sec-Fetch-Mode'])  this[s.port] = 443
-            else                        this[s.port] = 80
-        }
+            // Check whether we've come from HTTP or HTTPS by hopefully checking for a unique HTTPS header.
+            else {
+                if(this['Sec-Fetch-Mode'])  this[s.port] = 443
+                else                        this[s.port] = 80
+            }
+        } 
+        
+        // No host is found, we can asusme any other parsing is useless at best.
+        else return null
     }
 
     // Getters for the locked data.
