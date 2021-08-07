@@ -8,7 +8,7 @@ Stock NPM install.
 ##### Usage
 ```javascript
 // Imports
-import { SimpleHeaders } from '@leemcdonald-au/SimpleHeaders'
+import SimpleHeaders from '@leemcdonald-au/SimpleHeaders'
 import { createServer } from 'net'
 
 // Create NET server.
