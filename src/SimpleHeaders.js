@@ -21,15 +21,8 @@ export default class SimpleHeaders {
     // Provide a simple HTML5 page.
     static html(title = "", content = "") { return `<!doctype html><html><head><meta charset="utf8"><title>${title}</title></head><body>${content}</body></html>` }
 
-    // Provide a complete headers + html response closed connection response.
-    static reply(code, title, reason, keepAlive = false) {
-        const reply = [
-            SimpleHeaders.build(code, { Connection:  keepAlive ? 'keep-alive' : "closed", "Content-Type": "text/html" }),
-            SimpleHeaders.html(title, reason)
-        ]
-
-        return reply.join('')
-    }
+    // Provide a complete headers + html response.
+    static reply(code, title, reason, headers) { return [SimpleHeaders.build(code, headers), SimpleHeaders.html(title, reason)].join('') }
 
     // Accept a string of headers and conver them into a handy object.
     constructor(headers = "") {

@@ -61,11 +61,14 @@ socket.end(r200 + rok)
 socket.end(r500 + rer)
 
 // SimpleHeaders.reply(code, title, content, keepAlive = false) Return a full headers + HTML compliant response. Kills connection by default.
-const ohshi = SimpleHeaders.reply(500, 'Internal Server Error', 'There has been an internal server error, request cannot be answered.')
+const ohshi = SimpleHeaders.reply(500, 'Internal Server Error', 'There has been an internal server error, request cannot be answered.', { "Content-Type": "text/html", Connection: "closed" })
 socket.end(ohshi)
 ```
 
 ### Changelog
+- 1.0.5
+    - Changed SimpleHeaders.reply() to SimpleHeaders.reply(code, page_title, page_content, headers)
+    
 - 1.0.4
     - Encrypted headers return null rather than throwing.
     - added close()
