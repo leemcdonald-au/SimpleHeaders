@@ -21,9 +21,20 @@ export default class SimpleHeaders {
     // Provide a simple HTML5 page.
     static html(title = "", content = "") { return `<!doctype html><html><head><meta charset="utf8"><title>${title}</title></head><body>${content}</body></html>` }
 
+    // Provide a complete headers + html response closed connection response.
+    static reply(code, title, reason, keepAlive = false) {
+        const reply = [
+            SimpleHeaders.build(code, { Connection:  keepAlive ? 'keep-alive' : "closed", "Content-Type": "text/html" }),
+            SimpleHeaders.html(title, reason)
+        ]
+
+        return reply.join('')
+    }
+
     // Accept a string of headers and conver them into a handy object.
     constructor(headers = "") {
-        if(headers[0] === 22) throw new Error("Cannot parse encrypted headers.")
+        // Cannot parse encrypted headers, return null.
+        if(headers[0] === 22) return null
 
         // Some default values.
         this[s.type]    = null  // Type of the request.
